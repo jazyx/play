@@ -1,0 +1,141 @@
+:root {
+  /* Prevent non-player from clicking */
+  --events: none;
+}
+
+#memory {
+  --gap: 0.25vmin;
+  --size: 17.5vmin;
+  --edge: calc(var(--size) / 10);
+  --square: calc(5 * (var(--size) + 2 * var(--gap)));
+  --dim: #000;
+  --cheat: #aaa;
+
+  pointer-events: var(--events);
+
+  .score {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: var(--square);
+
+    & p {
+      margin: 0 1em;
+
+      &.current {
+        color: #fff;
+      }
+    }
+
+    & span {
+      margin-left: 1em;
+    }
+  }
+
+  .player {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+
+    &:has(.settings) {
+      cursor: pointer;
+      pointer-events: all;
+    }
+  }
+
+  .settings {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 1.25em;
+    z-index: 1;
+
+    &.hide {
+      display: none
+    }
+
+    & button {
+      width: 100%;
+      padding: 0.25em 0.5em;
+      border-radius: 0.5em;
+    }
+  }
+
+  .layout {
+    display: flex;
+    flex-wrap: wrap;
+    width: var(--square);
+    counter-set: card;
+
+    div {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: var(--size);
+      height: var(--size);
+      margin: var(--gap);
+      color: var(--dim);
+      background-color: var(--dim);
+      border-radius: var(--edge);
+      overflow: hidden;
+      cursor: pointer;
+      counter-increment: card;
+
+      &::after {
+        content: counter(card);
+        color: #fff;
+        position: absolute;
+        top: 0.5em;
+        left: 0.5em;
+        text-shadow: 0 0 4px black
+      }
+
+      &:has(p) {
+        border: 1px outset #888;
+        box-sizing: border-box;
+
+        &::after {
+          color: #aaa
+        }
+      }
+
+      &:has(img.show-found),
+      &:has(img.found) {
+        cursor: default
+      }
+
+      &:has(.show-found) {
+        border: 1px inset white;
+        box-sizing: border-box;
+      }
+
+      img {
+        width: var(--size);
+        height: var(--size);
+        object-fit: contain;
+        margin: 0;
+        color: #fff;
+        line-height: 5em;
+        text-align: center;
+
+        &.found {
+          opacity: 0.25;
+        }
+      }
+    }
+
+    &.peek {
+      p {
+        pointer-events: all;
+
+        &:hover {
+          color: var(--cheat);
+        }
+      }
+    }
+  }
+}
