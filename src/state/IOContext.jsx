@@ -1,7 +1,10 @@
 /**
  * frontend/src/state/IOContext.jsx
  *
- * description
+ * Creates a Socket.io connection with the URL defined in .env
+ * 
+ * NOTE that without a VPN, connections to a remote production
+ * server will fail.
  */
 
 
@@ -15,10 +18,10 @@ const URL = (process.env.NODE_ENV === "production")
   ? SERVER // if undefined, computed from window.location
   : ORIGIN
 const socket = io(URL)
+// console.log("URL:", URL)
+// console.log("socket:", socket)
+
 const TIMEOUT = 5000
-
-
-console.log("URL:", URL)
 
 
 export const IOContext = createContext()
@@ -35,11 +38,12 @@ export const IOProvider = ({ children }) => {
   const initializeIO = () => {
     function onConnect() {
       setIsConnected(true)
+      // console.log("CONNECTED")
     }
 
     function onDisconnect() {
       setIsConnected(false)
-      console.log("DISCONNECTED")
+      // console.log("DISCONNECTED")
     }
 
     function onIncomingEvent(value) {
@@ -65,14 +69,14 @@ export const IOProvider = ({ children }) => {
 
   const reconnect = () => {
     if (!socket.isConnected) {
-      console.log("reconnecting...")
+      // console.log("reconnecting...")
       socket.connect()
     }
   }
 
 
   useEffect(initializeIO, [])
-  useEffect(reconnect)
+  // useEffect(reconnect)
 
 
   return (
