@@ -3,14 +3,16 @@
  */
 
 
-import { useState } from 'react'
-import socket from '../socket' // io(URL)
+import { useState, useContext } from 'react'
+import { IOContext } from '../state/IOContext'
 
-const TIMEOUT = 5000
+
 const EVENT   = "submit"
 
 
 export default function Form({ isConnected, addEvent }) {
+  const { socket, TIMEOUT } = useContext(IOContext)
+
   const [ value, setValue ] = useState('Send me')
   const [ isLoading, setIsLoading ] = useState(false)
 

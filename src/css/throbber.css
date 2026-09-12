@@ -1,8 +1,8 @@
-/* #throbber {
+.throbber {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%; */
+  height: 100%;
 
   .lds-ring {
     display: inline-block;
@@ -31,7 +31,7 @@
   .lds-ring div:nth-child(3) {
     animation-delay: -0.15s;
   }
-/* } */
+}
 
 @keyframes lds-ring {
   0% {

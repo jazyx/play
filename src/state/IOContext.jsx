@@ -6,9 +6,19 @@
 
 
 import { createContext, useState, useEffect } from 'react'
-import socket from '../socket'
+import { io } from 'socket.io-client'
 
+
+const ORIGIN = import.meta.env.VITE_ORIGIN
+const SERVER = import.meta.env.VITE_SERVER
+const URL = (process.env.NODE_ENV === "production")
+  ? SERVER // if undefined, computed from window.location
+  : ORIGIN
+const socket = io(URL)
 const TIMEOUT = 5000
+
+
+console.log("URL:", URL)
 
 
 export const IOContext = createContext()
@@ -19,18 +29,19 @@ export const IOProvider = ({ children }) => {
     socket.connected
   )
   const [ incomingEvents, setIncomingEvents ] = useState([])
-  const [ username, setUsername ] = useState("")  
-  
+  const [ username, setUsername ] = useState("")
+
 
   const initializeIO = () => {
     function onConnect() {
       setIsConnected(true)
     }
-    
+
     function onDisconnect() {
       setIsConnected(false)
+      console.log("DISCONNECTED")
     }
-    
+
     function onIncomingEvent(value) {
       addEvent(value)
     }
@@ -52,7 +63,16 @@ export const IOProvider = ({ children }) => {
   }
 
 
+  const reconnect = () => {
+    if (!socket.isConnected) {
+      console.log("reconnecting...")
+      socket.connect()
+    }
+  }
+
+
   useEffect(initializeIO, [])
+  useEffect(reconnect)
 
 
   return (

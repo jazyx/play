@@ -3,10 +3,12 @@
  */
 
 
-import socket from '../socket'
+import { useContext } from 'react'
+import { IOContext } from '../state/IOContext'
 
 
 export default function ConnectionManager({ isConnected }) {
+  const { socket } = useContext(IOContext)
 
   const connect = () => {
     socket.connect()

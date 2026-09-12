@@ -3,14 +3,12 @@
  */
 
 
-import { useState } from 'react'
-import socket from '../socket'
-
-
-const TIMEOUT = 5000
+import { useState, useContext } from 'react'
+import { IOContext } from '../state/IOContext'
 
 
 export default function SetName({ addEvent }) {
+  const { socket, TIMEOUT } = useContext(IOContext)
   const [ name, setName ] = useState("")
   
 
